@@ -1,30 +1,25 @@
 # Maintainer: Renner03 <Renner03@protonmail.com>
 
-pkgname=swaysome-git
+pkgname=swaysome
 _pkgname=swaysome
-pkgver=1.1.5.r49.gd700e56
+pkgver=1.1.5
 pkgrel=1
 pkgdesc='AwesomeWM-like workspaces for sway'
-arch=('x86_64')
+arch=("x86_64" "aarch64")
 url='https://gitlab.com/hyask/swaysome'
 license=('MIT')
 makedepends=('git' 'rust')
 provides=("$_pkgname")
 conflicts=("$_pkgname")
-source=("$_pkgname::git+$url")
-md5sums=('SKIP')
-
-pkgver() {
-  cd "$_pkgname"
-  echo $(grep '^version =' Cargo.toml|head -n1|cut -d\" -f2).r$(git rev-list --count HEAD).g$(git rev-parse --short HEAD)
-}
+source=("$pkgname-$pkgver.tar.gz::$url/-/archive/$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('f1d4130aee527c5dd803ac6e118d226a')
 
 build() {
-  cd "$_pkgname"
+  cd "$_pkgname-$pkgver"
   cargo build --release
 }
 
 package() {
-  cd "$_pkgname"
+  cd "$_pkgname-$pkgver"
   install -Dm755 "target/release/$_pkgname" "$pkgdir/usr/bin/$_pkgname"
 }
